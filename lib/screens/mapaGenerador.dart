@@ -24,6 +24,7 @@ class SvgMapWidget extends StatefulWidget {
   const SvgMapWidget({Key? key, required this.svgImage}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _SvgMapWidgetState createState() => _SvgMapWidgetState();
 }
 
@@ -113,7 +114,6 @@ class _SvgMapWidgetState extends State<SvgMapWidget> {
     );
   }
 
-  void _handleCountrySelection(Country? country) {}
 
   Widget _getClippedImage({
     required Clipper clipper,
@@ -161,7 +161,7 @@ class Clipper extends CustomClipper<Path> {
     final Matrix4 matrix = Matrix4.identity()
       ..scale(scaleFactor); // Aplicar la escala uniformemente
     // Transformar el path con la matriz de escala
-    return path.transform(matrix.storage).shift(Offset(-125, 0));
+    return path.transform(matrix.storage).shift(const Offset(-125, 0));
   }
 
   @override

@@ -18,10 +18,15 @@ class ClimaScreen extends StatefulWidget {
 class _ClimaScreenState extends State<ClimaScreen> {
   Lectura? lectura;
   bool _isLoading = false;
-
+  String nombreEstacion = "";
   @override
   void initState() {
     super.initState();
+    if (widget.cityName == "Conce") {
+      nombreEstacion = "Concepción";
+    } else {
+      nombreEstacion = widget.cityName;
+    }
     // Llamar a la función getEstacion al inicio para cargar los datos iniciales
     getEstacion(widget.cityName);
   }
@@ -35,7 +40,7 @@ class _ClimaScreenState extends State<ClimaScreen> {
             padding: EdgeInsets.all(16.0),
             decoration: BoxDecoration(
               color: Color(int.parse('FF${widget.color}', radix: 16)),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(24.0),
                 bottomRight: Radius.circular(24.0),
               ),
@@ -47,17 +52,17 @@ class _ClimaScreenState extends State<ClimaScreen> {
                   onPressed: () {
                     Navigator.pop(context); // Regresar a la pantalla anterior
                   },
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
                 Text(
-                  widget.cityName,
-                  style: TextStyle(
+                  nombreEstacion,
+                  style: const TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(width: 40.0), // Ajuste de espaciado
+                const SizedBox(width: 40.0), // Ajuste de espaciado
               ],
             ),
           ),
@@ -66,7 +71,7 @@ class _ClimaScreenState extends State<ClimaScreen> {
               child: Center(
                 child: Container(
                   padding: const EdgeInsets.all(16.0),
-                  constraints: BoxConstraints(maxWidth: 400.0),
+                  constraints: const BoxConstraints(maxWidth: 400.0),
                   child: _buildContent(),
                 ),
               ),
@@ -88,7 +93,7 @@ class _ClimaScreenState extends State<ClimaScreen> {
 
   Widget _buildContent() {
     if (_isLoading) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     } else if (lectura != null) {
@@ -120,7 +125,7 @@ class _ClimaScreenState extends State<ClimaScreen> {
         ],
       );
     } else {
-      return Center(
+      return const Center(
         child: Text('No se ha cargado ninguna lectura'),
       );
     }

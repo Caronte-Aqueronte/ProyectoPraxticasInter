@@ -15,6 +15,7 @@ class CreditsScreen extends StatelessWidget {
   // Lista de personas con nombres, números de identificación y URLs de imágenes
   final List<Person> people = [
     Person('Luis Antonio Monterroso', '202031794', 'luis.png'),
+    Person('Luis Alejandro Méndez', '202030627', 'elPapa.png'),
     Person('Carlos Pac', '201931012', 'carlos.png'),
     Person('Fernando Rodríguez', '202030542', 'fernando.png'),
     Person('Karla Matias', '201830032', 'karla.png'),
@@ -45,8 +46,8 @@ class CreditsScreen extends StatelessWidget {
           // Contenedor para mostrar la lista de personas en el centro
           Center(
             child: Container(
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 5.0), // Margen horizontal
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 5.0), // Margen horizontal
               padding: const EdgeInsets.all(60.0),
               constraints: const BoxConstraints(maxWidth: 400.0),
               child: Column(
