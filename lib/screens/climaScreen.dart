@@ -6,22 +6,24 @@ import 'package:proyecto_tiempo/models/direccionVientoInfo.dart';
 import 'package:proyecto_tiempo/models/lectura.dart';
 
 class ClimaScreen extends StatefulWidget {
-  ClimaScreen({Key? key}) : super(key: key);
+  final String cityName;
+  final String color;
+  const ClimaScreen({super.key, required this.cityName, required this.color});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ClimaScreenState createState() => _ClimaScreenState();
 }
 
 class _ClimaScreenState extends State<ClimaScreen> {
   Lectura? lectura;
   bool _isLoading = false;
-  String estacion = "";
 
   @override
   void initState() {
     super.initState();
-    // Llamar a la función getCunoc al inicio para cargar los datos iniciales
-    getCunoc();
+    // Llamar a la función getEstacion al inicio para cargar los datos iniciales
+    getEstacion(widget.cityName);
   }
 
   @override
@@ -30,15 +32,32 @@ class _ClimaScreenState extends State<ClimaScreen> {
       body: Column(
         children: [
           Container(
-            color: const Color.fromARGB(255, 0, 147, 239),
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Color(int.parse('FF${widget.color}', radix: 16)),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(24.0),
+                bottomRight: Radius.circular(24.0),
+              ),
+            ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildButtonWithText(Icons.search, 'Cunoc', getCunoc),
-                _buildButtonWithText(Icons.settings, 'Cantel', getCantel),
-                _buildButtonWithText(
-                    Icons.settings, 'Concepción', getConcepcion),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Regresar a la pantalla anterior
+                  },
+                  icon: Icon(Icons.arrow_back, color: Colors.white),
+                ),
+                Text(
+                  widget.cityName,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(width: 40.0), // Ajuste de espaciado
               ],
             ),
           ),
@@ -57,7 +76,8 @@ class _ClimaScreenState extends State<ClimaScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          getEstacion(estacion); // Llamar a la función correspondiente
+          getEstacion(
+              widget.cityName); // Recargar los datos al presionar el botón
         },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.refresh, color: Colors.white),
@@ -66,31 +86,11 @@ class _ClimaScreenState extends State<ClimaScreen> {
     );
   }
 
-  Widget _buildButtonWithText(
-    IconData iconData,
-    String buttonText,
-    VoidCallback onPressed,
-  ) {
-    return Column(
-      children: [
-        IconButton(
-          icon: Icon(iconData),
-          onPressed: onPressed,
-          iconSize: 32.0,
-          color: Colors.white,
-        ),
-        const SizedBox(height: 8.0),
-        Text(
-          buttonText,
-          style: const TextStyle(color: Colors.white),
-        ),
-      ],
-    );
-  }
-
   Widget _buildContent() {
     if (_isLoading) {
-      return CircularProgressIndicator();
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     } else if (lectura != null) {
       return Column(
         children: [
@@ -140,29 +140,16 @@ class _ClimaScreenState extends State<ClimaScreen> {
     );
   }
 
-  void getConcepcion() {
-    estacion = "Conce";
-    getEstacion(estacion);
-  }
-
-  void getCunoc() {
-    estacion = "Cunoc";
-    getEstacion(estacion);
-  }
-
-  void getCantel() {
-    estacion = "Cantel";
-    getEstacion(estacion);
-  }
-
   Future<void> getEstacion(String nombreEstacion) async {
     setState(() {
       _isLoading = true; // Mostrar indicador de carga
     });
 
     try {
-      final response = await http.get(Uri.parse(
-          'https://cyt.cunoc.edu.gt/index.php/Ultimo-Registro/$nombreEstacion'));
+      final response = await http.get(
+        Uri.parse(
+            'https://cyt.cunoc.edu.gt/index.php/Ultimo-Registro/$nombreEstacion'),
+      );
 
       if (response.statusCode == 200) {
         setState(() {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_tiempo/screens/creditsScreen.dart';
 import 'package:proyecto_tiempo/screens/climaScreen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:proyecto_tiempo/screens/mapaWrap.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -59,7 +60,7 @@ final _navBarItems = [
   ),
 ];
 
-final _screens = [ClimaScreen(), CreditsScreen()];
+final _screens = [MapaScreen(), CreditsScreen()];
 
 final _imagenes = [
   const AssetImage("weather.png"),
